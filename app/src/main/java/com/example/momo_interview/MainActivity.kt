@@ -24,8 +24,11 @@ class MainActivity : AppCompatActivity() {
 
         // 創建 Adapter 並將 GridLayout 作為標題加入
         val headerData = listOf("promo", "promo", "promo", "promo", "promo", "promo", "promo", "promo", "promo")
-        val itemData = listOf("1", "2", "3", "4", "5", "6", "7", "8", "9")
+        val itemData = listOf(1,2,3,4,5,6,7,8,9)
         val adapter = MainAdapter(headerData,itemData,screenWidth)
         recyclerView.adapter = adapter
+
+        val stickyHeaderDecoration = StickyHeaderDecoration()
+        recyclerView.addItemDecoration(stickyHeaderDecoration)
     }
 }
