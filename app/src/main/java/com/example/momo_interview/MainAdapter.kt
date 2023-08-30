@@ -8,17 +8,19 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.GridLayout
 import android.widget.TextView
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.momo_interview.databinding.HeaderGridLayoutBinding
 import com.example.momo_interview.databinding.ItemLayoutBinding
 import com.example.momo_interview.databinding.StickyHeaderLayoutBinding
 
-class MainAdapter (private val headerData: List<String>, private val itemData: List<Int>, private val screenWidth: Int) :
+class MainAdapter (private val headerData: List<String>, private val itemData: List<Item>, private val screenWidth: Int,private var isTwoColumns: Boolean, private val onToggle: (Boolean) -> Unit) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    private val HEADER_VIEW_TYPE = 0
-    private val STICKY_HEADER_VIEW_TYPE = 1
-    private val ITEM_VIEW_TYPE = 2
+    companion object {
+        const val HEADER_VIEW_TYPE = 0
+        const val STICKY_HEADER_VIEW_TYPE = 1
+        const val ITEM_VIEW_TYPE = 2
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
@@ -47,10 +49,14 @@ class MainAdapter (private val headerData: List<String>, private val itemData: L
             }
             is StickyHeaderViewHolder -> {
                 holder.bind()
+                holder.itemView.setOnClickListener {
+                    isTwoColumns = !isTwoColumns
+                    onToggle(isTwoColumns)
+                }
             }
             is ItemViewHolder -> {
                 // 處理 item 的內容
-                holder.bind(itemData)
+                holder.bind(itemData[position - 2])
             }
         }
     }
@@ -117,34 +123,33 @@ class MainAdapter (private val headerData: List<String>, private val itemData: L
         private val binding = StickyHeaderLayoutBinding.bind(itemView)
 
         fun bind() {
-                binding.text.text = "filter"
-            }
+            binding.text.text = "filter"
         }
+    }
 
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val binding = ItemLayoutBinding.bind(itemView)
-        private var isAddFavorite = true
+        private val binding = ItemLayoutBinding.bind(itemView)
 
         @SuppressLint("UseCompatLoadingForDrawables")
-        fun bind(item: List<Int>) {
-            for (i in item){
-                binding.text.text = i.toString()
-            }
+        fun bind(item: Item) {
+            binding.text.text = item.number.toString()
 
             binding.favorite.setImageDrawable(
                 binding.favorite.context.getDrawable(
-                    if (isAddFavorite) R.drawable.icon_favorite else R.drawable.icon_favorite_selected
+                    if (item.isFavorite) R.drawable.icon_favorite_selected else R.drawable.icon_favorite
                 )
             )
 
             binding.favorite.setOnClickListener {
-                isAddFavorite = !isAddFavorite
+                item.isFavorite = !item.isFavorite
                 binding.favorite.setImageDrawable(
                     binding.favorite.context.getDrawable(
-                        if (isAddFavorite) R.drawable.icon_favorite else R.drawable.icon_favorite_selected
+                        if (item.isFavorite) R.drawable.icon_favorite_selected else R.drawable.icon_favorite
                     )
                 )
             }
         }
     }
+
+    data class Item(val number: Int, var isFavorite: Boolean)
 }

@@ -4,14 +4,25 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
+import android.view.GestureDetector
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
+import androidx.core.view.GestureDetectorCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class StickyHeaderDecoration() : RecyclerView.ItemDecoration() {
+class StickyHeaderDecoration(val clickListener: HeaderClickListener) : RecyclerView.ItemDecoration() {
+
+    interface HeaderClickListener {
+        fun onHeaderClicked()
+    }
+
+    private lateinit var headerView: View
+    private val grayBlockHeightInDp = 140 // 原来的像素值
 
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
-        val headerView = LayoutInflater.from(parent.context)
+        headerView = LayoutInflater.from(parent.context)
             .inflate(R.layout.header_grid_layout, parent, false)
 
         val topChild = parent.getChildAt(0)
@@ -21,15 +32,19 @@ class StickyHeaderDecoration() : RecyclerView.ItemDecoration() {
             // Hide sticky header at the top
             return
         }
-//        val stickyHeaderTop = maxOf(0, (topChild.top ?: 0) - headerView.height)
 
         drawHeader(c, headerView)
     }
-
+    fun getHeaderHeight(rv: RecyclerView): Float {
+        if (!::headerView.isInitialized) {
+            headerView = LayoutInflater.from(rv.context)
+                .inflate(R.layout.header_grid_layout, rv, false)
+        }
+        return changeDpToPx(headerView, grayBlockHeightInDp)
+    }
     private fun drawHeader(c: Canvas, header: View) {
-
-        val grayBlockHeightInDp = 140 // 原来的像素值
         val grayBlockHeightInPx = changeDpToPx(header, grayBlockHeightInDp)
+        val marginInPx = changeDpToPx(header, 8)
 
         val paint = Paint().apply {
             color = Color.GRAY
@@ -42,10 +57,10 @@ class StickyHeaderDecoration() : RecyclerView.ItemDecoration() {
         }
 
         c.drawRect(
-            changeDpToPx(header, 16),
-            changeDpToPx(header, 20),
-            c.width.toFloat() - changeDpToPx(header, 16),
-            grayBlockHeightInPx - changeDpToPx(header, 28),
+            marginInPx,
+            marginInPx + changeDpToPx(header, 20 - 8),
+            c.width.toFloat() - marginInPx,
+            grayBlockHeightInPx - marginInPx - changeDpToPx(header, 28 - 8),
             paint
         )
 
@@ -59,7 +74,6 @@ class StickyHeaderDecoration() : RecyclerView.ItemDecoration() {
         header.draw(c)
         c.restore()
     }
-
 
     private fun changeDpToPx(header: View, dp: Int): Float {
         val scale: Float = header.resources.displayMetrics.density

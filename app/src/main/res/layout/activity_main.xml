@@ -10,8 +10,33 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
+        android:layout_margin="8dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="8dp"/>
+        android:layout_height="match_parent"/>
+
+    <TextView
+        android:id="@+id/good"
+        android:layout_width="200dp"
+        android:layout_height="150dp"
+        android:background="@drawable/layout_background"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:layout_margin="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/goToTop"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/icon_triangle"
+        android:layout_marginBottom="16dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/good"
+        app:layout_constraintEnd_toEndOf="@+id/good"
+        app:layout_constraintBottom_toBottomOf="@+id/good"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
