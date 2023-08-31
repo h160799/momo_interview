@@ -3,13 +3,8 @@ package com.example.momo_interview
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.Rect
-import android.view.GestureDetector
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
-import androidx.core.view.GestureDetectorCompat
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class StickyHeaderDecoration(val clickListener: HeaderClickListener) : RecyclerView.ItemDecoration() {

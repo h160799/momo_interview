@@ -10,11 +10,13 @@ import android.widget.GridLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.momo_interview.data.Item
+import com.example.momo_interview.data.Promo
 import com.example.momo_interview.databinding.HeaderGridLayoutBinding
 import com.example.momo_interview.databinding.ItemLayoutBinding
 import com.example.momo_interview.databinding.StickyHeaderLayoutBinding
 
-class MainAdapter (private val headerData: List<String>, private val itemData: List<Item>, private val screenWidth: Int,private var isTwoColumns: Boolean, private val onToggle: (Boolean) -> Unit) :
+class MainAdapter (private val headerData: List<Promo>, private val itemData: List<Item>, private val screenWidth: Int, private var isTwoColumns: Boolean, private val onToggle: (Boolean) -> Unit) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         const val HEADER_VIEW_TYPE = 0
@@ -50,8 +52,8 @@ class MainAdapter (private val headerData: List<String>, private val itemData: L
             is StickyHeaderViewHolder -> {
                 holder.bind()
                 holder.itemView.setOnClickListener {
-                    isTwoColumns = !isTwoColumns
-                    onToggle(isTwoColumns)
+                        isTwoColumns = !isTwoColumns
+                        onToggle(isTwoColumns)
                 }
             }
             is ItemViewHolder -> {
@@ -74,7 +76,7 @@ class MainAdapter (private val headerData: List<String>, private val itemData: L
     class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = HeaderGridLayoutBinding.bind(itemView)
 
-        fun bind(headerData: List<String>, screenWidth: Int) {
+        fun bind(headerData: List<Promo>, screenWidth: Int) {
             val gridLayout = binding.gridLayout
             gridLayout.removeAllViews()
 
@@ -89,7 +91,7 @@ class MainAdapter (private val headerData: List<String>, private val itemData: L
                 for (j in 0 until columnCount) {
                     val cellLayout = FrameLayout(gridLayout.context)
                     val textView = TextView(cellLayout.context)
-                    textView.text = headerData[i * columnCount + j]
+                    textView.text = headerData[i * columnCount + j].title
 
                     val cellLayoutParams = GridLayout.LayoutParams()
                     cellLayoutParams.width = 0
@@ -123,16 +125,16 @@ class MainAdapter (private val headerData: List<String>, private val itemData: L
         private val binding = StickyHeaderLayoutBinding.bind(itemView)
 
         fun bind() {
-            binding.text.text = "filter"
+                binding.text.text = "filter"
+            }
         }
-    }
 
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = ItemLayoutBinding.bind(itemView)
 
         @SuppressLint("UseCompatLoadingForDrawables")
         fun bind(item: Item) {
-            binding.text.text = item.number.toString()
+            binding.text.text = item.number
 
             binding.favorite.setImageDrawable(
                 binding.favorite.context.getDrawable(
@@ -150,6 +152,4 @@ class MainAdapter (private val headerData: List<String>, private val itemData: L
             }
         }
     }
-
-    data class Item(val number: Int, var isFavorite: Boolean)
 }
