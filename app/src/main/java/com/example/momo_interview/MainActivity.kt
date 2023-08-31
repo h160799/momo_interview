@@ -1,14 +1,21 @@
 package com.example.momo_interview
 
+import android.app.AlertDialog
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
+import androidx.core.content.ContentProviderCompat
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.momo_interview.data.network.LoadApiStatus
 import com.example.momo_interview.databinding.ActivityMainBinding
+import com.example.momo_interview.util.Util
+import com.example.momo_interview.util.Util.isInternetConnected
+import com.example.momo_interview.util.Util.showNetworkErrorDialog
 
 class MainActivity : AppCompatActivity() {
 
@@ -37,6 +44,7 @@ class MainActivity : AppCompatActivity() {
                 LoadApiStatus.DONE -> {
                     viewModel.products.observe(this) { products ->
                         if (products!=null){
+                            setLoader(View.GONE)
                             adapter = MainAdapter(products.promo, products.item, screenWidth, isTwoColumns) { newColumnState ->
                                 isTwoColumns = newColumnState
                                 (recyclerView.layoutManager as GridLayoutManager).spanSizeLookup = getSpanSizeLookup()
@@ -45,6 +53,8 @@ class MainActivity : AppCompatActivity() {
 
                             recyclerView.layoutManager = gridLayoutManager
                             recyclerView.adapter = adapter
+                        }else{
+                            setLoader(View.VISIBLE)
                         }
                     }
 
@@ -101,11 +111,14 @@ class MainActivity : AppCompatActivity() {
                         }
                     })
                 }
+                LoadApiStatus.ERROR -> {
+                    if (!isInternetConnected()) {
+                        showNetworkErrorDialog(this)
+                    }
+                }
                 else -> {}
             }
         }
-
-
     }
 
     private fun getSpanSizeLookup(): GridLayoutManager.SpanSizeLookup {
@@ -117,5 +130,9 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    fun setLoader(isVisible: Int) {
+        binding.progressBar.visibility = isVisible
     }
 }

@@ -44,7 +44,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
         getProductsResult(true)
     }
 
-    private fun getProductsResult(isInitial: Boolean = false) {
+    fun getProductsResult(isInitial: Boolean = false) {
 
         coroutineScope.launch {
 
