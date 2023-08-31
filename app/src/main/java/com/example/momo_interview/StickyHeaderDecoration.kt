@@ -14,7 +14,7 @@ class StickyHeaderDecoration(val clickListener: HeaderClickListener) : RecyclerV
     }
 
     private lateinit var headerView: View
-    private val grayBlockHeightInDp = 140 // 原来的像素值
+    private val grayBlockHeightInDp = 140
 
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         headerView = LayoutInflater.from(parent.context)

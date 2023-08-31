@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.GridLayout
 import android.widget.TextView
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.momo_interview.data.Item
 import com.example.momo_interview.data.Promo
@@ -63,7 +62,7 @@ class MainAdapter (private val headerData: List<Promo>, private val itemData: Li
         }
     }
 
-    override fun getItemCount(): Int = itemData.size + 2  // 考慮加上 header
+    override fun getItemCount(): Int = itemData.size + 2
 
     override fun getItemViewType(position: Int): Int {
         return when (position) {

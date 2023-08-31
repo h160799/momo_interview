@@ -2,7 +2,6 @@ package com.example.momo_interview.util
 
 import android.content.Context
 import androidx.annotation.VisibleForTesting
-import com.example.momo_interview.data.DataSource
 import com.example.momo_interview.data.DefaultRepository
 import com.example.momo_interview.data.Repository
 import com.example.momo_interview.data.network.RemoteDataSource

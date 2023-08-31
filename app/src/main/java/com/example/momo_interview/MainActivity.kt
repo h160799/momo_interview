@@ -1,19 +1,14 @@
 package com.example.momo_interview
 
-import android.app.AlertDialog
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
-import androidx.core.content.ContentProviderCompat
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.momo_interview.data.network.LoadApiStatus
 import com.example.momo_interview.databinding.ActivityMainBinding
-import com.example.momo_interview.util.Util
 import com.example.momo_interview.util.Util.isInternetConnected
 import com.example.momo_interview.util.Util.showNetworkErrorDialog
 
@@ -131,8 +126,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-    fun setLoader(isVisible: Int) {
+    private fun setLoader(isVisible: Int) {
         binding.progressBar.visibility = isVisible
     }
 }

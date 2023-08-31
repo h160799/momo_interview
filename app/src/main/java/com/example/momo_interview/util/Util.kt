@@ -4,9 +4,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.net.ConnectivityManager
-import android.net.Network
 import android.net.NetworkCapabilities
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.example.momo_interview.Application
 
 object Util {
